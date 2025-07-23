@@ -1,0 +1,56 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+    int d;
+    struct node* next;
+};
+struct node* create()
+{
+    struct node* head;
+    head=(struct node*)malloc(sizeof(struct node));
+    head->next=NULL;
+    return head;
+}
+void insert(struct node* head,int n,int pos)
+{
+    struct node* prev=head;
+    int i=0;
+    while(i<(pos-1) && prev!=NULL)
+    {
+        prev=prev->next;
+        i++;
+    }
+    if(prev==NULL)
+    {
+        printf("length exceeded the position");
+    }
+    else
+    {
+        struct node* nn;
+        nn=(struct node*)malloc(sizeof(struct node));
+        nn->d=n;
+        nn->next=prev->next;
+        prev->next=nn;
+    }
+}
+void display(struct node* head)
+{
+    struct node* temp;
+    temp=head->next;
+    while(temp!=NULL)
+    {
+       printf("\n %d",temp->d);
+       temp=temp->next;
+    }
+}
+int main()
+{
+    struct node* head = create();
+    insert(head,2,1);
+    insert(head,3,2);
+    insert(head,4,3);
+    insert(head,5,2);
+    insert(head,6,7);
+    display(head);
+}
