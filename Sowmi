@@ -1,0 +1,124 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Define the flight structure
+struct Flight {
+    char flightNo[10];
+    char destination[20];
+    char departureTime[10];
+    char status[10]; // On-Time or Delayed
+};
+
+// Function to add a new flight
+struct Flight* addFlight(struct Flight* flights, int* size, int capacity) {
+    if (*size >= capacity) {
+        printf("Cannot add more flights. Capacity reached (%d).\n", capacity);
+        return flights;
+    }
+
+    struct Flight newFlight;
+    printf("\nEnter Flight Number: ");
+    scanf("%s", newFlight.flightNo);
+    printf("Enter Destination: ");
+    scanf("%s", newFlight.destination);
+    printf("Enter Departure Time: ");
+    scanf("%s", newFlight.departureTime);
+    printf("Enter Status (On-Time/Delayed): ");
+    scanf("%s", newFlight.status);
+
+    // Add flight to array
+    flights[*size] = newFlight;
+    (*size)++;
+
+    printf("Flight added successfully!\n");
+    return flights;
+}
+
+// Function to display delayed flights
+void displayDelayed(struct Flight* flights, int size) {
+    int found = 0;
+    printf("\n--- Delayed Flights ---\n");
+    for (int i = 0; i < size; i++) {
+        if (strcmp(flights[i].status, "Delayed") == 0) {
+            printf("Flight No: %s, Destination: %s, Departure: %s\n",
+                   flights[i].flightNo, flights[i].destination, flights[i].departureTime);
+            found = 1;
+        }
+    }
+    if (!found) {
+        printf("No delayed flights.\n");
+    }
+}
+
+// Function to search flights by destination
+void searchByDestination(struct Flight* flights, int size, char* dest) {
+    int found = 0;
+    printf("\n--- Flights to %s ---\n", dest);
+    for (int i = 0; i < size; i++) {
+        if (strcmp(flights[i].destination, dest) == 0) {
+            printf("Flight No: %s, Departure: %s, Status: %s\n",
+                   flights[i].flightNo, flights[i].departureTime, flights[i].status);
+            found = 1;
+        }
+    }
+    if (!found) {
+        printf("No flights found to this destination.\n");
+    }
+}
+
+// Main function
+int main() {
+    int capacity;
+    int size = 0;
+    int choice;
+    char destination[20];
+
+    printf("Enter maximum number of flights to store: ");
+    scanf("%d", &capacity);
+
+    // Allocate memory for flights
+    struct Flight* flights = (struct Flight*) malloc(capacity * sizeof(struct Flight));
+    if (flights == NULL) {
+        printf("Memory allocation failed!\n");
+        return 1;
+    }
+
+    while (1) {
+        printf("\nFlight Tracking System\n");
+        printf("1. Add Flight\n");
+        printf("2. Display Delayed Flights\n");
+        printf("3. Search Flights by Destination\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                flights = addFlight(flights, &size, capacity);
+                break;
+            case 2:
+                if (size == 0) {
+                    printf("No flights available.\n");
+                } else {
+                    displayDelayed(flights, size);
+                }
+                break;
+            case 3:
+                if (size == 0) {
+                    printf("No flights available.\n");
+                } else {
+                    printf("Enter destination: ");
+                    scanf("%s", destination);
+                    searchByDestination(flights, size, destination);
+                }
+                break;
+            case 4:
+                free(flights); // Free allocated memory
+                printf("Exiting program.\n");
+                return 0;
+            default:
+                printf("Invalid choice. Try again.\n");
+        }
+    }
+}
