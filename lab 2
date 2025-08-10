@@ -1,0 +1,134 @@
+1. You are given two non-empty linked lists representing two non-negative integers. The digits
+are stored in reverse order, and each of their nodes contains a single digit. Add the two
+numbers and return the sum as a linked list.
+You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+Example 1:
+Input: l1 = [2,4,3], l2 = [5,6,4]
+Output: [7,0,8]
+Explanation: 342 + 465 = 807.
+ code:
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node1 {
+    int d;
+    struct node1* next;
+};
+
+struct node1* create1() {
+    struct node1* head1;
+    head1 = (struct node1*)malloc(sizeof(struct node1));
+    head1->next = NULL;
+    return head1;
+}
+
+void insert1(struct node1* head1, int e) {
+    struct node1* nn = (struct node1*)malloc(sizeof(struct node1));
+    nn->d = e;
+    nn->next = head1->next;
+    head1->next = nn;
+}
+
+struct node2 {
+    int d;
+    struct node2* next;
+};
+
+struct node2* create2() {
+    struct node2* head2;
+    head2 = (struct node2*)malloc(sizeof(struct node2));
+    head2->next = NULL;
+    return head2;
+}
+
+void insert2(struct node2* head2, int e) {
+    struct node2* nn = (struct node2*)malloc(sizeof(struct node2));
+    nn->d = e;
+    nn->next = head2->next;
+    head2->next = nn;
+}
+
+struct node3 {
+    int d;
+    struct node3* next;
+    struct node3* prev;
+};
+
+struct node3* newnode() {
+    struct node3* head3 = (struct node3*)malloc(sizeof(struct node3));
+    head3->next = NULL;
+    head3->prev=NULL;
+    return head3;
+}
+
+void insert3(struct node3* head3, int element) {
+    struct node3* nn = (struct node3*)malloc(sizeof(struct node3));
+    nn->d = element;
+    nn->next = head3->next;
+    nn->prev=head3;
+    head3->next = nn;
+    if(nn->next!=NULL)
+    {
+        nn->next->prev=nn;
+    }
+}
+
+void display(struct node3* head3) {
+    struct node3* last=head3;
+    while(last->next!=NULL)
+    {
+        last=last->next;
+    }
+    while(last->prev!=NULL)
+    {
+        printf("%d",last->d);
+        last=last->prev;
+    }
+}
+
+
+void add(struct node1* head1, struct node2* head2, struct node3* head3) {
+    struct node1* temp1 = head1->next;
+    struct node2* temp2 = head2->next;
+    int reminder = 0;
+
+    while (temp1 != NULL || temp2 != NULL || reminder>0) {
+        int a = (temp1 != NULL) ? temp1->d : 0;
+        int b = (temp2 != NULL) ? temp2->d : 0;
+        int sum = a + b + reminder;
+        reminder = sum / 10;
+        int digit = sum % 10;
+
+        insert3(head3, digit);
+
+        if (temp1 != NULL) temp1 = temp1->next;
+        if (temp2 != NULL) temp2 = temp2->next;
+    }
+}
+
+int main() {
+    struct node1* head1 = create1();
+    struct node2* head2 = create2();
+    struct node3* head3 = newnode();  
+
+    // inserting [2, 4, 3] → represents 342
+    insert1(head1, 9);
+    insert1(head1, 9);
+    insert1(head1, 9);
+    insert1(head1, 9);
+    insert1(head1, 9);
+    insert1(head1, 9);
+    insert1(head1, 9);
+
+    // inserting [5, 6, 4] → represents 465
+    insert2(head2, 9);
+    insert2(head2, 9);
+    insert2(head2, 9);
+    insert2(head2, 9);
+
+    add(head1, head2, head3);  // ✅ updated: pass head3 to add()
+
+    display(head3);  // Output: 708
+
+    return 0;
+}
