@@ -1,0 +1,178 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int d;
+    struct node* next;
+    struct node* prev;
+};
+
+struct node* create()
+{
+    struct node* head = (struct node*)malloc(sizeof(struct node));
+    head->next = NULL;
+    head->prev = NULL;
+    return head;
+}
+
+void insert(struct node* head, int e)
+{
+    struct node* nn = (struct node*)malloc(sizeof(struct node));
+    nn->d = e;
+    nn->next = head->next;
+    nn->prev = head;
+    head->next = nn;
+    if (nn->next != NULL)
+    {
+        nn->next->prev = nn;
+    }
+}
+
+struct node1
+{
+    int d;
+    struct node1* next;
+    struct node1* prev;
+};
+
+struct node1* create1()
+{
+    struct node1* head1 = (struct node1*)malloc(sizeof(struct node1));
+    head1->next = NULL;
+    head1->prev = NULL;
+    return head1;
+}
+
+void insert1(struct node1* head1, int e)
+{
+    struct node1* nn = (struct node1*)malloc(sizeof(struct node1));
+    nn->d = e;
+    nn->next = head1->next;
+    nn->prev = head1;
+    head1->next = nn;
+    if (nn->next != NULL)
+    {
+        nn->next->prev = nn;
+    }
+}
+
+// Core logic: remove list1 nodes from a to b and insert list2
+void search(struct node* head, struct node1* head1, int a, int b)
+{
+    // Traverse to node at position a
+    struct node* front = head->next;
+    int i = 1;
+    while (front != NULL && i < a)
+    {
+        front = front->next;
+        i++;
+    }
+
+    // Save the node just before position a
+    struct node* prev_a = front ? front->prev : NULL;
+
+    // Traverse to node at position b
+    struct node* end = front;
+    int j = i;
+    while (end != NULL && j <= b)
+    {
+        end = end->next;
+        j++;
+    }
+
+    // Save the node just after position b
+    struct node* after_b = end;
+
+    // Find first and last node of list2
+    struct node1* p = head1->next;
+    struct node1* last = p;
+    if (p != NULL)
+    {
+        while (last->next != NULL)
+        {
+            last = last->next;
+        }
+    }
+
+    // Convert list2 (node1) to node type temporarily
+    struct node* list2_first = NULL;
+    struct node* list2_last = NULL;
+
+    // Convert each node1 to a new node
+    while (p != NULL)
+    {
+        struct node* new_node = (struct node*)malloc(sizeof(struct node));
+        new_node->d = p->d;
+        new_node->next = NULL;
+        new_node->prev = NULL;
+
+        if (list2_first == NULL)
+        {
+            list2_first = list2_last = new_node;
+        }
+        else
+        {
+            list2_last->next = new_node;
+            new_node->prev = list2_last;
+            list2_last = new_node;
+        }
+
+        p = p->next;
+    }
+
+    // Connect previous part to new list
+    if (prev_a != NULL)
+    {
+        prev_a->next = list2_first;
+    }
+    if (list2_first != NULL)
+    {
+        list2_first->prev = prev_a;
+    }
+
+    // Connect end of new list to the rest of list1
+    if (list2_last != NULL)
+    {
+        list2_last->next = after_b;
+    }
+    if (after_b != NULL)
+    {
+        after_b->prev = list2_last;
+    }
+}
+
+void display(struct node* head)
+{
+    struct node* temp = head->next;
+    while (temp != NULL)
+    {
+        printf("%d", temp->d);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+
+int main()
+{
+    struct node* head = create();
+    insert(head, 1);
+    insert(head, 1);
+    insert(head, 1);
+    insert(head, 1);
+    insert(head, 1);
+    insert(head, 1);
+
+    struct node1* head1 = create1();
+    insert1(head1, 8);
+    insert1(head1, 8);
+    insert1(head1, 8);
+
+    int n, m;
+    scanf("%d %d", &n, &m);
+
+    display(head);
+    search(head, head1, n, m);
+    display(head);
+    return 0;
+}
