@@ -303,3 +303,80 @@ int main()
     display(head);
     return 0;
 }
+
+
+30. Given head which is a reference node to a singly-linked list. The value of each node in the
+linked list is either 0 or 1. The linked list holds the binary representation of a number.
+Return the decimal value of the number in the linked list.
+The most significant bit is at the head of the linked list.
+
+code:
+
+#include <stdio.h>
+#include <stdlib.h>
+#include<math.h>
+
+struct node
+{
+    int d;
+    struct node* next;
+    struct node* prev;
+};
+
+struct node* create()
+{
+    struct node* head = (struct node*)malloc(sizeof(struct node));
+    head->next = NULL;
+    head->prev = NULL;
+    return head;
+}
+
+void insert(struct node* head, int e)
+{
+    struct node* nn = (struct node*)malloc(sizeof(struct node));
+    nn->d = e;
+    nn->next = head->next;
+    nn->prev = head;
+    head->next = nn;
+    if (nn->next != NULL)
+    {
+        nn->next->prev = nn;
+    }
+}
+void number(struct node* head)
+{
+    long long num=0;
+    struct node* temp=head->next;
+    while(temp!=NULL)
+    {
+        num=num*10+(temp->d);
+        temp=temp->next;
+    }
+    int decimal=0,i=0,rem;
+    while(num!=0)
+    {
+        rem=num%10;
+        decimal=decimal+rem*pow(2,i);
+        num=num/10;
+        i++;
+    }
+    printf("%d",decimal);
+}
+void display(struct node* head)
+{
+    struct node* temp = head->next;
+    while (temp != NULL)
+    {
+        printf("%d", temp->d);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+int main()
+{
+    struct node* head = create();
+    insert(head, 1);
+    insert(head, 0);
+    insert(head, 1);
+    number(head);
+}
