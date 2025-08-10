@@ -380,3 +380,80 @@ int main()
     insert(head, 1);
     number(head);
 }
+
+28. Given the head of a singly linked list, return the middle node of the linked list.
+If there are two middle nodes, return the second middle node.
+
+code:
+
+#include <stdio.h>
+#include <stdlib.h>
+#include<math.h>
+#include<string.h>
+
+struct node
+{
+    int d;
+    struct node* next;
+    struct node* prev;
+};
+
+struct node* create()
+{
+    struct node* head = (struct node*)malloc(sizeof(struct node));
+    head->next = NULL;
+    head->prev = NULL;
+    return head;
+}
+
+void insert(struct node* head, int e)
+{
+    struct node* nn = (struct node*)malloc(sizeof(struct node));
+    nn->d = e;
+    nn->next = head->next;
+    nn->prev = head;
+    head->next = nn;
+    if (nn->next != NULL)
+    {
+        nn->next->prev = nn;
+    }
+}
+void length(struct node* head)
+{
+    int len=1;
+    struct node* temp=head->next;
+    while(temp!=NULL)
+    {
+        temp=temp->next;
+        len++;
+    }
+    int rl;
+    if(len%2!=0)
+    {
+        rl=len/2;
+    }
+    else
+    {
+     rl=(len/2)+1;
+    }
+    int i=1;
+    struct node*t=head->next;
+    while(t!=NULL && i<rl)
+    {
+        t=t->next;
+        i++;
+    }
+    printf("%d",t->d);
+}
+
+int main()
+{
+    struct node* head = create();
+    insert(head, 1);
+    insert(head, 1);
+    insert(head, 1);
+     insert(head, 29);
+      insert(head, 1);
+       insert(head, 1);
+    length(head);
+}
