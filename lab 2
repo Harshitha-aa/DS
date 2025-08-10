@@ -132,3 +132,86 @@ int main() {
 
     return 0;
 }
+
+
+
+2.Given the head of a linked list, remove the nth node from the end of the list and return its
+head.
+code:
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+    int d;
+    struct node* next;
+    struct node* prev;
+};
+struct node* create()
+{
+    struct node* head=(struct node*)malloc(sizeof(struct node));
+    head->next=NULL;
+    head->prev=NULL;
+    return head;
+}
+void insert(struct node* head,int e)
+{
+    struct node* nn=(struct node*)malloc(sizeof(struct node));
+    nn->d=e;
+    nn->next=head->next;
+    nn->prev=head;
+    head->next=nn;
+    if(nn->next!=NULL)
+    {
+        nn->next->prev=nn;
+    }
+}
+void delete(struct node* head,int pos)
+{
+    struct node* last;
+    last=head;
+    while(last->next!=NULL)
+    {
+        last=last->next;
+    }
+    int i=1;
+    while(last->prev!=NULL && i<pos)
+    {
+        last=last->prev;
+        i++;
+    }
+    if(last->prev==NULL)
+    {
+        printf("pos exceeds len");
+    }
+    else
+    {
+        last->prev->next=last->next;
+        last->next->prev=last->prev;
+    }
+}
+void display(struct node* head)
+{
+    struct node* temp;
+    temp=head->next;
+    while(temp!=NULL)
+    {
+        printf("%d",temp->d);
+        temp=temp->next;
+    }
+}
+int main()
+{
+    struct node* head=create();
+    insert(head,1);
+    insert(head,2);
+    insert(head,3);
+    insert(head,4);
+    insert(head,5);
+    insert(head,6);
+    int n;
+    scanf("%d",&n);
+    display(head);
+    delete(head,n);
+    display(head);
+    return 0;
+}
