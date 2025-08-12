@@ -1,3 +1,5 @@
+BRUTE FORCE:::
+
 #include<stdio.h>
 #include<stdlib.h>
 struct node
@@ -87,4 +89,71 @@ int main()
     insert(head,1);
     grouping(head,head1);
     display(head1);
+}
+
+
+O(N)::
+
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+	int d;
+	struct node* next;
+};
+struct node* create()
+{
+	struct node* head=(struct node*)malloc(sizeof(struct node));
+	head->next=NULL;
+	return head;
+}
+void insert(struct node* head,int e)
+{
+	struct node* nn=(struct node*)malloc(sizeof(struct node));
+	nn->d=e;
+	nn->next=head->next;
+	head->next=nn;
+}
+void group(struct node* head)
+{
+    if (head->next == NULL || head->next->next == NULL) return; 
+
+    struct node* odd = head->next;            
+    struct node* even = head->next->next;    
+    struct node* evenHead = even;            
+
+    while (even != NULL && even->next != NULL)
+    {
+        odd->next = even->next;  
+        odd = odd->next;
+
+        even->next = odd->next;  
+        even = even->next;
+    }
+
+    odd->next = evenHead; 
+}
+
+void display(struct node* head)
+{
+    struct node* temp;
+    temp=head->next;
+    while(temp!=NULL)
+    {
+        printf("%d",temp->d);
+        temp=temp->next;
+    }
+    printf("\n yeyy😍😁😱🥳🎈");
+}
+int main()
+{
+    struct node* head=create();
+    insert(head,1);
+    insert(head,2);
+    insert(head,1);
+    insert(head,2);
+    insert(head,1);
+    insert(head,2);
+     group(head);
+    display(head);
 }
