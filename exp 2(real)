@@ -1,0 +1,90 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+	int d;
+	struct node* next;
+};
+struct node* create()
+{
+	struct node* head=(struct node*)malloc(sizeof(struct node));
+	head->next=NULL;
+	return head;
+}
+void insert(struct node* head,int e)
+{
+	struct node* nn=(struct node*)malloc(sizeof(struct node));
+	nn->d=e;
+	nn->next=head->next;
+	head->next=nn;
+}
+struct node1
+{
+	int d;
+	struct node1* next;
+};
+struct node1* create1()
+{
+	struct node1* head1=(struct node1*)malloc(sizeof(struct node1));
+	head1->next=NULL;
+	return head1;
+}
+void insert1(struct node1* head1,int e)
+{
+	struct node1* nn=(struct node1*)malloc(sizeof(struct node1));
+	nn->d=e;
+	nn->next=head1->next;
+	head1->next=nn;
+}
+void grouping(struct node* head,struct node1* head1)
+{
+    struct node* temp;
+    temp=head->next;
+    int i=1;
+    while(temp!=NULL)
+    {
+        if(i%2!=0)
+        {
+            insert1(head1,temp->d);
+        }
+        i++;
+        temp=temp->next;
+    }
+    struct node* t;
+    t=head->next->next;
+    int j=2;
+    while(t!=NULL)
+    {
+        if(j%2==0)
+        {
+            insert1(head1,t->d);
+        }
+        j++;
+        t=t->next;
+    }
+    
+}
+void display(struct node1* head1)
+{
+    struct node1* temp;
+    temp=head1->next;
+    while(temp!=NULL)
+    {
+        printf("%d",temp->d);
+        temp=temp->next;
+    }
+}
+int main()
+{
+    struct node* head=create();
+    struct node1* head1=create1();
+    insert(head,1);
+    insert(head,2);
+    insert(head,1);
+    insert(head,2);
+    insert(head,1);
+    insert(head,2);
+    insert(head,1);
+    grouping(head,head1);
+    display(head1);
+}
