@@ -1,0 +1,227 @@
+STACK:
+#include<stdio.h>
+#include<stdlib.h>
+struct node{
+    int d;
+    struct node* next;
+};
+struct node* create()
+{
+    struct node* head;
+    head=(struct node*)malloc(sizeof(struct node));
+    head->next=NULL;
+    return head;
+}
+void push(struct node* head,int e)
+{
+    struct node* nn=(struct node*)malloc(sizeof(struct node));
+    nn->d=e;
+    nn->next=head->next;
+    head->next=nn;
+}
+void pop(struct node* head)
+{
+    if(head->next!=NULL)
+    {
+        printf("%d ",head->next->d);
+        struct node* t=head->next;
+        head->next=head->next->next;
+        free(t);
+    }
+    else
+    {
+        printf("list is empty");
+    }
+}
+void peek(struct node* head)
+{
+    if(head->next!=NULL)
+    {
+        printf("%d ",head->next->d);
+    }
+}
+int main()
+{
+    struct node* head=create();
+    for(int i=1;i<=5;i++)
+    {
+        push(head,i);
+    }
+    pop(head);
+    pop(head);
+    peek(head);
+}
+
+QUEUE:
+
+#include<stdio.h>
+#include<stdlib.h>
+struct node{
+    int d;
+    struct node* next;
+};
+
+struct node* create()
+{
+    struct node* head;
+    head=(struct node*)malloc(sizeof(struct node));
+    head->next=NULL;
+    return head;
+}
+
+struct node* enqueue(struct node* head,struct node* rear,int e)
+{
+    struct node* nn=(struct node*)malloc(sizeof(struct node));
+    nn->d=e;
+    rear->next=nn;
+    nn->next=NULL;
+    rear=nn;
+    return rear;
+}
+void dequeue(struct node* head)
+{
+    if(head->next!=NULL)
+    {
+        printf("%d ",head->next->d);
+        struct node* t=head->next;
+        head->next=head->next->next;
+        free(t);
+    }
+    else
+    {
+        printf("list is empty");
+    }
+}
+void peek(struct node* head)
+{
+    if(head->next!=NULL)
+    {
+        printf("%d ",head->next->d);
+    }
+}
+int main()
+{
+    struct node* head=create();
+    struct node* rear=head;
+    for(int i=1;i<=5;i++)
+    {
+        rear=enqueue(head,rear,i);
+    }
+    dequeue(head);
+    peek(head);
+}
+
+QUEUE 2:
+
+#include<stdio.h>
+#include<stdlib.h>
+struct node{
+    int d;
+    struct node* next;
+};
+
+struct node* create()
+{
+    struct node* head;
+    head=(struct node*)malloc(sizeof(struct node));
+    head->next=NULL;
+    return head;
+}
+
+void enqueue(struct node* head,int e)
+{
+    struct node* last=head;
+    while(last->next!=NULL)
+    {
+        last=last->next;
+    }
+    struct node* nn=(struct node*)malloc(sizeof(struct node));
+    nn->d=e;
+    last->next=nn;
+    nn->next=NULL;
+}
+void dequeue(struct node* head)
+{
+    if(head->next!=NULL)
+    {
+        printf("%d ",head->next->d);
+        struct node* t=head->next;
+        head->next=head->next->next;
+        free(t);
+    }
+    else
+    {
+        printf("list is empty");
+    }
+}
+void peek(struct node* head)
+{
+    if(head->next!=NULL)
+    {
+        printf("%d ",head->next->d);
+    }
+}
+int main()
+{
+    struct node* head=create();
+    for(int i=1;i<=5;i++)
+    {
+        enqueue(head,i);
+    }
+    dequeue(head);
+    peek(head);
+}
+
+EXP 3:
+#include<stdio.h>
+#include<stdlib.h>
+struct node{
+    int d;
+    struct node* next;
+};
+struct node* create()
+{
+    struct node* head;
+    head=(struct node*)malloc(sizeof(struct node));
+    head->next=NULL;
+    return head;
+}
+void push(struct node* head,int e)
+{
+    struct node* temp=head->next;
+    int flag=-1;
+    while(temp!=NULL)
+    {
+        if(temp->d==e)
+        {
+            flag=1;
+        }
+        temp=temp->next;
+    }
+    if(flag==-1)
+    {
+    struct node* nn=(struct node*)malloc(sizeof(struct node));
+    nn->d=e;
+    nn->next=head->next;
+    head->next=nn;
+    }
+}
+void display(struct node* head)
+{
+    struct node* temp=head->next;
+    while(temp!=NULL)
+    {
+        printf("%d ",temp->d);
+        temp=temp->next;
+    }
+}
+int main()
+{
+    struct node* head=create();
+    push(head,1);
+    push(head,2);
+    push(head,3);
+    push(head,2);
+    push(head,4);
+    display(head);
+}
