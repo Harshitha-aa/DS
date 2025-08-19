@@ -1,0 +1,36 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct Node 
+{
+    int data;
+    struct Node *next;
+}*rear;
+struct Node *enqueue(struct Node *head,int i)
+{
+    struct Node *newnode=(struct Node *)malloc(sizeof(struct Node));
+    newnode->data=i;
+    rear->next=newnode;
+    newnode->next=NULL;
+    rear=newnode;
+    return rear;
+}
+struct Node *dequeue(struct Node *head)
+{
+    if(head->next!=NULL)
+    {
+        printf("%d ",head->next->data);
+        struct Node *t=head->next;
+        head->next=head->next->next;
+        free(t);
+    }
+}
+int main()
+{
+    struct Node *head=(struct Node *)malloc(sizeof(struct Node));
+    head->next=NULL;
+    rear=head;
+    for(int i=1;i<=5;i++)
+    rear=enqueue(head,i);
+    dequeue(head);
+    dequeue(head);
+}
