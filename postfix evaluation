@@ -1,0 +1,47 @@
+#include<stdio.h>
+#include<ctype.h>
+int stack[50];
+int top=-1;
+void push(int no)
+{
+    stack[++top]=no;
+}
+int pop()
+{
+    return stack[top--];
+}
+int main()
+{
+    char postfix[100];
+    scanf("%s",postfix);
+    int a,b;
+    for(int i=0;postfix[i]!='\0';i++)
+    {
+        if(isdigit(postfix[i]))
+        {
+            push(postfix[i]-'0');
+        }
+        else
+        {
+            a=pop();
+            b=pop();
+            switch(postfix[i])
+            {
+                case '+':
+                    push(b+a);
+                    break;
+                case '-':
+                    push(b-a);
+                    break;
+                case '*':
+                    push(b*a);
+                    break;
+                case '/':
+                    push(b/a);
+                    break;
+            }
+        }
+    }
+    printf("%d",pop());
+    return 0;
+}
