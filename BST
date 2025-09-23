@@ -1,0 +1,168 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node{
+    int data;
+    struct node* left;
+    struct node* right;
+};
+struct node* create(int d){
+    struct node* nn=(struct node*)malloc(sizeof(struct node));
+    nn->data=d;
+    printf("%d  ",d);
+    nn->left=NULL;
+    nn->right=NULL;
+    return nn;
+}
+struct node* insert(struct node* root,int d){
+    if(root==NULL)
+    {
+        root=create(d);
+        return root;
+    }
+
+        struct node* curr=root;
+    while(1)
+    {
+        if(d<curr->data)
+        {
+            if(curr->left==NULL)
+            {
+                curr->left=create(d);
+                return root;
+            }
+            else
+            {
+                curr=curr->left;
+            }
+        }
+        else
+        {
+            if(curr->right==NULL)
+            {
+                curr->right=create(d);
+                return root;
+            }
+            else
+            {
+                curr=curr->right;
+            }
+        }
+    }
+    return root;
+}
+void inorder(struct node* root) {
+    if (root==NULL) {
+        return;
+    }
+    inorder(root->left);
+    printf("%d ", root->data); 
+    inorder(root->right);
+}
+void preorder(struct node* root)
+{
+    if(root==NULL)
+    {
+        return;
+    }
+    printf("%d ",root->data);
+    preorder(root->left);
+    preorder(root->right);
+}
+void postorder(struct node* root)
+{
+    if(root==NULL)
+    {
+        return;
+    }
+    postorder(root->left);
+    postorder(root->right);
+    printf("%d ",root->data);
+}
+void search(struct node* root,int e)
+{
+    struct node* c=root;
+    while(c!=NULL)
+    {
+        if(e==c->data)
+        {
+            printf("element present");
+            break;
+        }
+        else if(e<c->data)
+        {
+            c=c->left;
+        }
+        else
+        {
+            c=c->right;
+        }
+    }
+}
+struct node* inordersucc(struct node* root){
+    struct node* curr=root;
+    while(curr!=NULL)
+    {
+        curr=curr->left;
+    }
+    return curr;
+}
+struct node* delete(struct node* root,int d)
+{
+    if(root==NULL)
+    {
+        return NULL;
+    }
+    if(d<root->data)
+    {
+        root->left=delete(root->left,d);
+    }
+    else if(d>root->data)
+    {
+        root->right=delete(root->right,d);
+    }
+    else
+    {
+        struct node* temp;
+        if(root->right==NULL)
+        {
+            temp=root->left;
+            free(root);
+            return temp;
+        }
+        else if(root->left==NULL)
+        {
+            temp=root->right;
+            free(root);
+            return temp;
+        }
+        else{
+            struct node* succ=inordersucc(root->right);
+            root->data=succ->data;
+            root=delete(root->right,succ->data);
+        }
+    }
+    return root;
+}
+int main()
+{
+    struct node* root=NULL;
+    root=insert(root,5);
+    root=insert(root,10);
+    root=insert(root,25);
+    root=insert(root,3);
+    root=insert(root,1);
+    root=insert(root,16);
+    root=insert(root,90);
+        printf("\n");
+    inorder(root);
+    printf("\n");
+    preorder(root);
+        printf("\n");
+    postorder(root);
+        printf("\n");
+    search(root,1);
+    root=delete(root,16);
+        printf("\n");
+      inorder(root);
+    return 0;
+}
