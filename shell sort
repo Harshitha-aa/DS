@@ -1,0 +1,51 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+void shellsort(int a[],int n)
+{
+    int gap=n/2;
+    while(gap!=1)
+    {
+    for(int x=0;gap+x<=n;x++)
+    {
+        if(a[x]>a[gap+x])
+        {
+            int temp=a[x];
+            a[x]=a[gap+x];
+            a[gap+x]=temp;
+        }
+    }
+    gap=gap/2;
+    }
+    int key,i,j;
+    for(i=1;i<n;i++)
+    {
+        key=a[i];
+        for(j=i-1;j>=0;j--)
+        {
+            if(a[j]>key)
+            {
+            a[j+1]=a[j];
+            }
+            else
+            {
+            break;
+            }
+        }
+        a[j+1]=key;
+    }
+    for(int k=0;k<n;k++)
+    {
+        printf("%d",a[k]);
+    }
+}
+
+int main() {
+    int n=10;
+int a[n];
+for(int i=0;i<n;i++)
+{
+scanf("%d",&a[i]);
+}
+shellsort(a,n);
+    return 0;
+}
